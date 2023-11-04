@@ -34,7 +34,8 @@ class NewUserLoginWindow:
             "History",
             "PE",
             "Art",
-            "Chemistry"
+            "Chemistry",
+            "Other"
         ]
 
         # datatype of menu text
@@ -78,7 +79,8 @@ class NewUserLoginWindow:
             "Senior (High School)",
             "Freshmen (College)",
             "Sophomore (College)",
-            "Junior (College)"
+            "Junior (College)",
+            "Senior (College)"
         ]
 
         # datatype of menu text
@@ -90,9 +92,6 @@ class NewUserLoginWindow:
         # Create Dropdown menu
         drop = tk.OptionMenu(root, clicked_grade, *grades)
         drop.pack()
-
-        # Create button, it will change label text
-        grades_button = tk.Button(root, text="Submit Grade", command=show).pack()
 
         def change_dropdown(*args):
             global dropdown
