@@ -60,6 +60,7 @@ class ExistingUserLoginWindow:
             messagebox.showerror("Login Failed", "Invalid username or password")
 
 class MainApplication:
+    widgets = []
     def __init__(self, root):
         self.root = root
         self.root.title("Main Window")
@@ -70,17 +71,19 @@ class MainApplication:
         # Create a button to open the login page
         self.login_button = tk.Button(root, text="Existing User", command=self.open_existing_user_login_page)
         self.login_button.pack()
+        self.widgets.append(self.login_button)
 
         self.login_new_button = tk.Button(root, text="New User", command=self.open_new_user_login_page)
         self.login_new_button.pack()
+        self.widgets.append(self.login_new_button)
 
     def open_existing_user_login_page(self):
-        self.root.destroy()
-        self.root = tk.Tk()
         self.root.title("Existing User Login")
 
         # Set the initial login window size
-        self.root.geometry("1000x500")
+        # self.root.geometry("1000x500")
+
+        self.DestroyAllWidgets(self.widgets)
 
         login_window = ExistingUserLoginWindow(self.root)
 
@@ -92,6 +95,13 @@ class MainApplication:
         login_root.geometry("1000x500")
 
         login_window = NewUserLoginWindow(login_root)
+
+    def DestroyAllWidgets(self, _widgets):
+        for widget in _widgets:
+            text = widget.cget("text")
+            print(f"destroying widget: {text}")
+            widget.destroy()
+        widgets = []
 
 if __name__ == "__main__":
     root = tk.Tk()
