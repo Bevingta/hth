@@ -23,7 +23,7 @@ class NewUserLoginWindow:
 
         #get the subject(dropdown menu)
         teacher_subject = tk.StringVar()
-        dropdown = tk.OptionMenu(root, selected_option, "Option 1", "Option 2", "Option 3", "Option 4")
+        dropdown = tk.OptionMenu(root, teacher_subject, "Option 1", "Option 2", "Option 3", "Option 4")
         dropdown.pack()
 
 class ExistingUserLoginWindow:
@@ -66,8 +66,11 @@ class MainApplication:
         self.root.geometry("1000x500")
 
         # Create a button to open the login page
-        self.login_button = tk.Button(root, text="Open Login Page", command=self.open_existing_user_login_page)
+        self.login_button = tk.Button(root, text="Existing User", command=self.open_existing_user_login_page)
         self.login_button.pack()
+
+        self.login_new_button = tk.Button(root, text="New User", command=self.open_new_user_login_page)
+        self.login_new_button.pack()
 
     def open_existing_user_login_page(self):
         login_root = tk.Toplevel(self.root)
