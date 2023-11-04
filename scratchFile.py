@@ -1,6 +1,4 @@
-import tkinter as tk
 from tkinter import ttk
-
 import tkinter as tk
 from tkinter import messagebox
 
@@ -24,9 +22,36 @@ class NewUserLoginWindow:
         self.password_entry.pack()
 
         #get the subject(dropdown menu)
-        teacher_subject = tk.StringVar()
-        dropdown = tk.OptionMenu(root, teacher_subject, "Option 1", "Option 2", "Option 3", "Option 4")
-        dropdown.pack()
+        def show():
+            label.config(text=clicked.get())
+
+        # Dropdown menu options
+        subjects = [
+            "Math",
+            "English",
+            "Science",
+            "History",
+            "PE",
+            "Art",
+            "Chemistry"
+        ]
+
+        # datatype of menu text
+        clicked = tk.StringVar()
+
+        # initial menu text
+        clicked.set("Subject")
+
+        # Create Dropdown menu
+        drop = tk.OptionMenu(root, clicked, *subjects)
+        drop.pack()
+
+        # Create button, it will change label text
+        subject_button = tk.Button(root, text="click Me", command=show).pack()
+
+        # Create Label
+        label = tk.Label(root, text=" ")
+        label.pack()
 
 class ExistingUserLoginWindow:
     def __init__(self, root):
