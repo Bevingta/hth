@@ -68,15 +68,5 @@ def validate_user(username, password):
         return True
 
 def search_for_pdf(subject, grade):
-    pdfs = db["pdfs"]
-    results = pdfs.find({"subject": subject, "grade": grade})
-
-    for result in results:
-        file_name = result["file_name"]
-        grade = result["grade"]
-        title = result["title"]
-        rating = result["rating"]
-        subjcet = result["subject"]
-        print(f"fileName: {file_name}, grade: {grade}, title: {title}, rating: {rating}, subject: {subject}")
-        return result
-
+    pdfs = db["pdfs"]    
+    return pdfs.find({"subject": subject, "grade": grade})
