@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+import mongo
 
 def on_button_click():
     # This function will be called when the button is clicked
@@ -7,18 +8,26 @@ def on_button_click():
     selected_option2 = dropdown2.get()
     print(f"Grade: {selected_option2}, Subject: {selected_option1}")
 
-    listbox.pack(fill=BOTH, expand="true")
+    listbox.pack(fill=BOTH, expand=True)
 
     listbox.delete(0,listbox.size())
 
     # add in the loop to go through the list of lists here
-    for values in range(100):
-        rating = "Rating: " + str(values)
-        listbox.insert(END, values, rating, "")
+    results = mongo.search_for_pdf(selected_option1, selected_option2)    
+    for result in results:
+        if (result["number_of_ratings"] != 0):
+            rating = str(result["rating"] / result["number_of_ratings"])
+        else:
+            rating = "0"
+        title = "Title: " + result["title"]
+        insert_text = f"{title} (Rating: {rating})"
+        listbox.insert(END, insert_text, "")
 
 # Create the main application window
 root = tk.Tk()
 root.title("Dropdowns and Button in a Horizontal Line")
+
+root.geometry("1000x500")
 
 # Create a frame to hold the widgets in a horizontal line
 frame = tk.Frame(root)
