@@ -37,17 +37,70 @@ class NewUserLoginWindow:
         ]
 
         # datatype of menu text
-        clicked = tk.StringVar()
+        clicked_subject = tk.StringVar(root)
 
         # initial menu text
-        clicked.set("Subject")
+        clicked_subject.set("Subject")
 
         # Create Dropdown menu
-        drop = tk.OptionMenu(root, clicked, *subjects)
+        selected_subject = tk.OptionMenu(root, clicked_subject, *subjects)
+        selected_subject.pack()
+
+        # on change dropdown value
+        def change_dropdown(*args):
+            global dropdown
+            dropdown = str(clicked_subject.get())
+            print(dropdown)
+            return dropdown
+
+        # link function to change dropdown
+        clicked_subject.trace('w', change_dropdown)
+
+
+        # Create Label
+        label = tk.Label(root, text=" ")
+        label.pack()
+
+        # Dropdown menu options
+        grades = [
+            "1st",
+            "2nd",
+            "3rd",
+            "4th",
+            "5th",
+            "6th",
+            "7th",
+            "8th",
+            "Freshmen (High School)",
+            "Sophomore (High School)",
+            "Junior (High School)",
+            "Senior (High School)",
+            "Freshmen (College)",
+            "Sophomore (College)",
+            "Junior (College)"
+        ]
+
+        # datatype of menu text
+        clicked_grade = tk.StringVar()
+
+        # initial menu text
+        clicked_grade.set("Grade")
+
+        # Create Dropdown menu
+        drop = tk.OptionMenu(root, clicked_grade, *grades)
         drop.pack()
 
         # Create button, it will change label text
-        subject_button = tk.Button(root, text="click Me", command=show).pack()
+        grades_button = tk.Button(root, text="Submit Grade", command=show).pack()
+
+        def change_dropdown(*args):
+            global dropdown
+            dropdown = str(clicked_grade.get())
+            print(dropdown)
+            return dropdown
+
+        # link function to change dropdown
+        clicked_grade.trace('w', change_dropdown)
 
         # Create Label
         label = tk.Label(root, text=" ")
