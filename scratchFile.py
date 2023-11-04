@@ -75,13 +75,14 @@ class MainApplication:
         self.login_new_button.pack()
 
     def open_existing_user_login_page(self):
-        login_root = tk.Toplevel(self.root)
-        login_root.title("Existing User Login")
+        self.root.destroy()
+        self.root = tk.Tk()
+        self.root.title("Existing User Login")
 
         # Set the initial login window size
-        login_root.geometry("1000x500")
+        self.root.geometry("1000x500")
 
-        login_window = ExistingUserLoginWindow(login_root)
+        login_window = ExistingUserLoginWindow(self.root)
 
     def open_new_user_login_page(self):
         login_root = tk.Toplevel(self.root)
