@@ -33,13 +33,13 @@ documents = [
 def add_document_items():
     for document_name in documents:
         document_frame = tk.Frame(frame)
-        document_frame.pack(fill="x", padx=10, pady=5)
+        document_frame.pack(fill="x", padx=10, pady=5, expand = "true")
 
         document_label = tk.Label(document_frame, text=document_name)
         document_label.pack(side="left")
 
         download_button = tk.Button(document_frame, text="Download", command=lambda name=document_name: download_document(name))
-        download_button.pack(side="right")
+        download_button.pack(side="right", expand = "true")
 
 add_document_items()
 
