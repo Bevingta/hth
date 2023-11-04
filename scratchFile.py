@@ -4,6 +4,8 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter import messagebox
 
+import mongo # our file
+
 class NewUserLoginWindow:
     def __init__(self, root):
         self.root = root
@@ -23,7 +25,7 @@ class NewUserLoginWindow:
 
         #get the subject(dropdown menu)
         teacher_subject = tk.StringVar()
-        dropdown = tk.OptionMenu(root, selected_option, "Option 1", "Option 2", "Option 3", "Option 4")
+        dropdown = tk.OptionMenu(root, teacher_subject, "Option 1", "Option 2", "Option 3", "Option 4")
         dropdown.pack()
 
 class ExistingUserLoginWindow:
@@ -51,8 +53,8 @@ class ExistingUserLoginWindow:
         username = self.username_entry.get()
         password = self.password_entry.get()
 
-        # Check if the username and password are correct (you can replace this with your own logic)
-        if username == "your_username" and password == "your_password":
+        # Check if the username and password are correct (you can replace this with your own logic) (it has been replaced)
+        if mongo.validate_user(username, password):
             messagebox.showinfo("Login Successful", "Welcome, " + username)
         else:
             messagebox.showerror("Login Failed", "Invalid username or password")
@@ -66,17 +68,30 @@ class MainApplication:
         self.root.geometry("1000x500")
 
         # Create a button to open the login page
-        self.login_button = tk.Button(root, text="Open Login Page", command=self.open_existing_user_login_page)
+        self.login_button = tk.Button(root, text="Existing User", command=self.open_existing_user_login_page)
         self.login_button.pack()
 
+        self.login_new_button = tk.Button(root, text="New User", command=self.open_new_user_login_page)
+        self.login_new_button.pack()
+
     def open_existing_user_login_page(self):
+        self.root.destroy()
+        self.root = tk.Tk()
+        self.root.title("Existing User Login")
+
+        # Set the initial login window size
+        self.root.geometry("1000x500")
+
+        login_window = ExistingUserLoginWindow(self.root)
+
+    def open_new_user_login_page(self):
         login_root = tk.Toplevel(self.root)
-        login_root.title("Existing User Login")
+        login_root.title("New User Login")
 
         # Set the initial login window size
         login_root.geometry("1000x500")
 
-        login_window = ExistingUserLoginWindow(login_root)
+        login_window = NewUserLoginWindow(login_root)
 
 if __name__ == "__main__":
     root = tk.Tk()
