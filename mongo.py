@@ -43,5 +43,3 @@ def read_and_save_pdf(file_name):
         f.write(fs.get(pdfs[-1]).read())
 
 
-insert_pdf("HW6", "HW6.pdf")
-read_and_save_pdf("HW6")
