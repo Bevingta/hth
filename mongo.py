@@ -30,17 +30,31 @@ def create(username, password): # add a username and associated password
 
 pdfs = []
 
-def insert_pdf(file_name, file_path):
+def insert_pdf(file_name, file_path, grade, title, subject):
+    pdfs = db["pdfs"]
     with open(file_path, 'rb') as f:
         a = fs.put(f)
-        pdfs.append(a)
-        #string = base64.b64encode(f.read())
-        #pdf.insert_one({"file_name": file_name, "pdf_data": string})
+        pdfs.insert_one({
+                "file_name": file_name,
+                "grade": grade,
+                "title": title,
+                "rating": 0,
+                "number_of_ratings": 0,
+                "ref": a,
+                "subject": subject
+            })
     
 
-def read_and_save_pdf(file_name):
-    with open("out.pdf", "wb") as f:
-        f.write(fs.get(pdfs[-1]).read())
+def read_and_save_pdf(file_name, ref):
+    with open(file_name, "wb") as f:
+        try:
+            page = fs.get(ref).read()
+            try:
+                f.write(page)
+            except:
+                print("writing to page failed")
+        except:
+            print("getting page from fs failed")
 
 def validate_user(username, password):
     login = db["login"]
@@ -52,3 +66,17 @@ def validate_user(username, password):
     else:
         print("User found")
         return True
+
+def search_for_pdf(subject, grade):
+    pdfs = db["pdfs"]
+    results = pdfs.find({"subject": subject, "grade": grade})
+
+    for result in results:
+        file_name = result["file_name"]
+        grade = result["grade"]
+        title = result["title"]
+        rating = result["rating"]
+        subjcet = result["subject"]
+        print(f"fileName: {file_name}, grade: {grade}, title: {title}, rating: {rating}, subject: {subject}")
+        return result
+
