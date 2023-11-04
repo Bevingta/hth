@@ -1,12 +1,20 @@
 import tkinter as tk
 from tkinter import *
 
-
 def on_button_click():
     # This function will be called when the button is clicked
     selected_option1 = dropdown1.get()
     selected_option2 = dropdown2.get()
     print(f"Grade: {selected_option2}, Subject: {selected_option1}")
+
+    listbox.pack(fill=BOTH, expand="true")
+
+    listbox.delete(0,listbox.size())
+
+    # add in the loop to go through the list of lists here
+    for values in range(100):
+        rating = "Rating: " + str(values)
+        listbox.insert(END, values, rating, "")
 
 # Create the main application window
 root = tk.Tk()
@@ -58,18 +66,12 @@ dropdown2.set(grade_filter[0])  # Set the default selection
 dropdown_menu2 = tk.OptionMenu(frame, dropdown2, *grade_filter)
 dropdown_menu2.pack(side="left")
 
+listbox = Listbox(root)
+
 # Create a button
 button = tk.Button(frame, text="Filter", command=on_button_click)
 button.pack(side="left")
 
-listbox = Listbox(root)
-
-listbox.pack(fill=BOTH, expand = "true")
-
-#add in the loop to go through the list of lists here
-for values in range(100):
-    rating = "Rating: " + str(values)
-    listbox.insert(END, values, rating, "")
-
 # Start the main loop
 root.mainloop()
+
