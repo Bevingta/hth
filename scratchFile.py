@@ -4,6 +4,8 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter import messagebox
 
+import mongo # our file
+
 class NewUserLoginWindow:
     def __init__(self, root):
         self.root = root
@@ -51,8 +53,8 @@ class ExistingUserLoginWindow:
         username = self.username_entry.get()
         password = self.password_entry.get()
 
-        # Check if the username and password are correct (you can replace this with your own logic)
-        if username == "your_username" and password == "your_password":
+        # Check if the username and password are correct (you can replace this with your own logic) (it has been replaced)
+        if mongo.validate_user(username, password):
             messagebox.showinfo("Login Successful", "Welcome, " + username)
         else:
             messagebox.showerror("Login Failed", "Invalid username or password")

@@ -42,4 +42,13 @@ def read_and_save_pdf(file_name):
     with open("out.pdf", "wb") as f:
         f.write(fs.get(pdfs[-1]).read())
 
+def validate_user(username, password):
+    login = db["login"]
 
+    user = login.find_one({"username": username, "password": password})
+    if user is None:
+        print("User not found")
+        return False
+    else:
+        print("User found")
+        return True
