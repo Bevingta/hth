@@ -45,9 +45,16 @@ def insert_pdf(file_name, file_path, grade, title, subject):
             })
     
 
-def read_and_save_pdf(file_name):
-    with open("out.pdf", "wb") as f:
-        f.write(fs.get(pdfs[-1]).read())
+def read_and_save_pdf(file_name, ref):
+    with open(file_name, "wb") as f:
+        try:
+            page = fs.get(ref).read()
+            try:
+                f.write(page)
+            except:
+                print("writing to page failed")
+        except:
+            print("getting page from fs failed")
 
 def validate_user(username, password):
     login = db["login"]
@@ -69,18 +76,7 @@ def search_for_pdf(subject, grade):
         grade = result["grade"]
         title = result["title"]
         rating = result["rating"]
-        print(f"fileName: {file_name}, grade: {grade}, title: {title}, rating: {rating}")
-
-
-insert_pdf("a", "a.pdf", 12, "The Science of everything", "Science")
-insert_pdf("b", "b.pdf", 11, "The Math of everything", "Math")
-insert_pdf("c", "c.pdf", 9, "The hist", "English")
-insert_pdf("d", "d.pdf", 8, "d.pdf", "History")
-
-search_for_pdf("Science", 12)
-
-
-
-
-
+        subjcet = result["subject"]
+        print(f"fileName: {file_name}, grade: {grade}, title: {title}, rating: {rating}, subject: {subject}")
+        return result
 
