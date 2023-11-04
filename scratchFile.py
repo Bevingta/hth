@@ -80,6 +80,15 @@ class MainApplication:
 
         login_window = ExistingUserLoginWindow(login_root)
 
+    def open_new_user_login_page(self):
+        login_root = tk.Toplevel(self.root)
+        login_root.title("New User Login")
+
+        # Set the initial login window size
+        login_root.geometry("1000x500")
+
+        login_window = NewUserLoginWindow(login_root)
+
 if __name__ == "__main__":
     root = tk.Tk()
     app = MainApplication(root)
