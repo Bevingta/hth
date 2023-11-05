@@ -8,6 +8,10 @@ import mongo # our file
 
 class NewUserLoginWindow:
     widgets = []
+    
+    def user_pass_to_main(self):
+        pass
+
     def __init__(self, root):
         self.root = root
         self.root.title("New User")
@@ -26,7 +30,8 @@ class NewUserLoginWindow:
 
         #get the subject(dropdown menu)
         def show():
-            label.config(text=clicked.get())
+            # label.config(text=clicked.get())
+            label.config(text="Hello, World")
 
         # datatype of menu text
         clicked_subject = tk.StringVar(root)
@@ -39,14 +44,14 @@ class NewUserLoginWindow:
         selected_subject.pack()
 
         # on change dropdown value
-        def change_dropdown(*args):
+        def change_dropdown_subject(*args):
             global dropdown
             dropdown = str(clicked_subject.get())
             print(dropdown)
             return dropdown
 
         # link function to change dropdown
-        clicked_subject.trace('w', change_dropdown)
+        clicked_subject.trace('w', change_dropdown_subject)
 
 
         # Create Label
@@ -63,28 +68,29 @@ class NewUserLoginWindow:
         drop = tk.OptionMenu(root, clicked_grade, *grades)
         drop.pack()
 
-        def change_dropdown(*args):
+        def change_dropdown_grade(*args):
             global dropdown
             dropdown = str(clicked_grade.get())
             print(dropdown)
             return dropdown
 
         # link function to change dropdown
-        clicked_grade.trace('w', change_dropdown)
+        clicked_grade.trace('w', change_dropdown_grade)
 
         # Create Label
         label = tk.Label(root, text=" ")
         label.pack()
 
         #this button is not showing up
-        self.create_button = tk.button(root, text="Create User", command=self.user_pass_to_main)
+        self.create_button = tk.Button(root, text="Create User", command=self.user_pass_to_main)
         self.create_button.pack()
 
         self.widgets.append(self.username_label)
         self.widgets.append(self.username_entry)
         self.widgets.append(self.password_label)
         self.widgets.append(self.password_entry)
-        self.widgets.append(dropdown)
+        self.widgets.append(drop)
+
 
 class ExistingUserLoginWindow:
     widgets = []
