@@ -17,7 +17,7 @@ class NewDocument:
         print(f"Filepath: {doc_file_entry.get()}")
 
 
-    def __init__(self, root):
+    def __init__(self, root, user):
         # Create a frame to hold the widgets in a horizontal line
         frame = tk.Frame(root)
         frame.pack()
@@ -101,7 +101,7 @@ class databaseScreen:
 
     def open_new_document_page(self):
         popup_doc = tk.Toplevel(self.root)
-        self.document_popup = NewDocument(popup_doc)
+        self.document_popup = NewDocument(popup_doc, self.user)
 
 
     def open_ratings_page(self, ref):
