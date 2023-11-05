@@ -311,8 +311,7 @@ class ExistingUserLoginWindow:
 
     def user_pass_to_main(self, user):
         self.root.title("Main Window")
-
-        self.DestroyAllWidgets(self.widgets)
+        self.DestroyAllWidgets()
         root = tk.Tk()
         root.geometry("1000x500")
         login_window = databaseScreen(root, user)
@@ -342,10 +341,11 @@ class ExistingUserLoginWindow:
         self.widgets.append(self.password_entry)
         self.widgets.append(self.login_button)
 
-    def DestroyAllWidgets(self, _widgets):
-        for widget in _widgets:
+    def DestroyAllWidgets(self):
+        for widget in self.widgets:
             widget.destroy()
         self.widgets = []
+        self.root.destroy()
 
     def login(self):
         # Get the entered username and password
