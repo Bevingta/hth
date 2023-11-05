@@ -11,7 +11,7 @@ class NewDocument:
         print(f"Grade: {selected_option2}, Subject: {selected_option1}")
         print(f"Filepath: {doc_file_entry.get()}")
 
-    def __init__(self):
+    def __init__(self, root):
         # Create a frame to hold the widgets in a horizontal line
         frame = tk.Frame(root)
         frame.pack()
@@ -106,48 +106,8 @@ class RatingApp:
             print(self.rating)
             self.root.destroy()
 
-class MainApplication:
-    widgets = []
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Main Window")
-
-        # Set the initial window size
-        self.root.geometry("1000x500")
-
-        # Create a button to open the login page
-        self.rating_button = customtkinter.CTkButton(master=root, text="Rate", command=self.open_ratings_page)
-        self.rating_button.pack()
-        self.widgets.append(self.rating_button)
-
-        self.login_new_button = customtkinter.CTkButton(master=root, text="New User", command=self.open_new_user_login_page)
-        self.login_new_button.pack()
-        self.widgets.append(self.login_new_button)
-
-    def open_ratings_page(self):
-        popup = tk.Toplevel(self.root)
-        self.rating_popup = RatingApp(popup)
-
-    def open_existing_user_login_page(self):
-        self.root.title("Existing User Login")
-
-        self.DestroyAllWidgets(self.widgets)
-
-        login_window = ExistingUserLoginWindow(self.root)
-
-    def open_new_document_page(self):
-        self.root.title("New Document")
-
-        self.DestroyAllWidgets(self.widgets)
-
-        login_window = NewDocument()
-
-    def DestroyAllWidgets(self, _widgets):
-        for widget in _widgets:
-            widget.destroy()
-        widgets = []
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = MainApplication(root)
-    root.mainloop()
+    app = NewDocument(root)
+    root.NewDocument()
