@@ -17,7 +17,7 @@ db = client.hth
 fs = gridfs.GridFS(db)
 
 
-def create(username, password): # add a username and associated password
+def create(username, password, grade, subject): # add a username and associated password
     login = db["login"]
     user = login.find_one({"username": username})
 
@@ -25,7 +25,7 @@ def create(username, password): # add a username and associated password
         print("A user with that username has already been found")
         return False
     else:
-        login.insert_one({"username": username, "password": password})
+        login.insert_one({"username": username, "password": password, "grade": grade, "subject": subject})
         return True
 
 pdfs = []

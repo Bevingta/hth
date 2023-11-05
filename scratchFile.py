@@ -183,7 +183,11 @@ class NewUserLoginWindow:
     widgets = []
     
     def user_pass_to_main(self):
-        pass
+        result = mongo.create(self.username_entry.get(), self.password_entry.get(), self.clicked_grade.get(), self.clicked_subject.get())
+        if not result:
+            print("Something went wrong with creating a new user!")
+        else:
+            print("New user created successfully")
 
     def __init__(self, root):
         self.root = root
@@ -207,24 +211,24 @@ class NewUserLoginWindow:
             label.config(text="Hello, World")
 
         # datatype of menu text
-        clicked_subject = tk.StringVar(root)
+        self.clicked_subject = tk.StringVar(root)
 
         # initial menu text
-        clicked_subject.set("Subject")
+        self.clicked_subject.set("Subject")
 
         # Create Dropdown menu
-        selected_subject = tk.OptionMenu(root, clicked_subject, *subjects)
+        selected_subject = tk.OptionMenu(root, self.clicked_subject, *subjects)
         selected_subject.pack()
 
         # on change dropdown value
         def change_dropdown_subject(*args):
             global dropdown
-            dropdown = str(clicked_subject.get())
+            dropdown = str(self.clicked_subject.get())
             print(dropdown)
             return dropdown
 
         # link function to change dropdown
-        clicked_subject.trace('w', change_dropdown_subject)
+        self.clicked_subject.trace('w', change_dropdown_subject)
 
 
         # Create Label
@@ -232,23 +236,23 @@ class NewUserLoginWindow:
         label.pack()
 
         # datatype of menu text
-        clicked_grade = tk.StringVar()
+        self.clicked_grade = tk.StringVar()
 
         # initial menu text
-        clicked_grade.set("Grade")
+        self.clicked_grade.set("Grade")
 
         # Create Dropdown menu
-        drop = tk.OptionMenu(root, clicked_grade, *grades)
+        drop = tk.OptionMenu(root, self.clicked_grade, *grades)
         drop.pack()
 
         def change_dropdown_grade(*args):
             global dropdown
-            dropdown = str(clicked_grade.get())
+            dropdown = str(self.clicked_grade.get())
             print(dropdown)
             return dropdown
 
         # link function to change dropdown
-        clicked_grade.trace('w', change_dropdown_grade)
+        self.clicked_grade.trace('w', change_dropdown_grade)
 
         # Create Label
         label = tk.Label(root, text=" ")
