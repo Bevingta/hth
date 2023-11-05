@@ -96,6 +96,17 @@ class databaseScreen:
     widgets = []
     search_frames = []
 
+    def download_document(self, title):
+        document = self.collection.find_one({"name": title})
+        if document:
+            filename = f"{selected_document_name}.pdf"
+
+            with open(filename, 'wb') as file:
+                file.write(document['data'])
+            print(f"Document '{selected_document_name}' downloaded as {filename}")
+        else:
+            print(f"Document '{selected_document_name}' not found in the database.")
+
     def DestroyAllWidgets(self, _widgets):
         for widget in _widgets:
             widget.destroy()
