@@ -1,6 +1,8 @@
 from tkinter import ttk
 import tkinter as tk
 from tkinter import messagebox
+from lists import grades, subjects
+
 
 import mongo # our file
 
@@ -25,18 +27,6 @@ class NewUserLoginWindow:
         #get the subject(dropdown menu)
         def show():
             label.config(text=clicked.get())
-
-        # Dropdown menu options
-        subjects = [
-            "Math",
-            "English",
-            "Science",
-            "History",
-            "PE",
-            "Art",
-            "Chemistry",
-            "Other"
-        ]
 
         # datatype of menu text
         clicked_subject = tk.StringVar(root)
@@ -63,26 +53,6 @@ class NewUserLoginWindow:
         label = tk.Label(root, text=" ")
         label.pack()
 
-        # Dropdown menu options
-        grades = [
-            "1st",
-            "2nd",
-            "3rd",
-            "4th",
-            "5th",
-            "6th",
-            "7th",
-            "8th",
-            "Freshmen (High School)",
-            "Sophomore (High School)",
-            "Junior (High School)",
-            "Senior (High School)",
-            "Freshmen (College)",
-            "Sophomore (College)",
-            "Junior (College)",
-            "Senior (College)"
-        ]
-
         # datatype of menu text
         clicked_grade = tk.StringVar()
 
@@ -105,6 +75,10 @@ class NewUserLoginWindow:
         # Create Label
         label = tk.Label(root, text=" ")
         label.pack()
+
+        #this button is not showing up
+        self.create_button = tk.button(root, text="Create User", command=self.user_pass_to_main)
+        self.create_button.pack()
 
         self.widgets.append(self.username_label)
         self.widgets.append(self.username_entry)
@@ -139,6 +113,11 @@ class ExistingUserLoginWindow:
         self.widgets.append(self.password_entry)
         self.widgets.append(self.login_button)
 
+    def DestroyAllWidgets(self, _widgets):
+        for widget in _widgets:
+            widget.destroy()
+        widgets = []
+
     def login(self):
         # Get the entered username and password
         username = self.username_entry.get()
@@ -146,7 +125,8 @@ class ExistingUserLoginWindow:
 
         # Check if the username and password are correct (you can replace this with your own logic) (it has been replaced)
         if mongo.validate_user(username, password):
-            messagebox.showinfo("Login Successful", "Welcome, " + username)
+            print("Passed")
+            self.user_pass_to_main()
         else:
             messagebox.showerror("Login Failed", "Invalid username or password")
 
@@ -171,21 +151,16 @@ class MainApplication:
     def open_existing_user_login_page(self):
         self.root.title("Existing User Login")
 
-        # Set the initial login window size
-        # self.root.geometry("1000x500")
-
         self.DestroyAllWidgets(self.widgets)
 
         login_window = ExistingUserLoginWindow(self.root)
 
     def open_new_user_login_page(self):
-        login_root = tk.Toplevel(self.root)
-        login_root.title("New User Login")
+        self.root.title("New User")
 
-        # Set the initial login window size
-        login_root.geometry("1000x500")
+        self.DestroyAllWidgets(self.widgets)
 
-        login_window = NewUserLoginWindow(login_root)
+        login_window = NewUserLoginWindow(self.root)
 
     def DestroyAllWidgets(self, _widgets):
         for widget in _widgets:
