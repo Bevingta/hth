@@ -48,7 +48,7 @@ class RatingApp:
 class databaseScreen:
     widgets = []
 
-    def open_ratings_page(self):
+    def open_ratings_page(self, ref):
         popup = tk.Toplevel(self.root)
         self.rating_popup = RatingApp(popup)
 
@@ -73,7 +73,7 @@ class databaseScreen:
 
                 resultFrame = tk.Frame(self.canvasFrame)
                 resultLabel = tk.Label(resultFrame, text=insert_text)
-                resultButton = tk.Button(resultFrame, text="Download", command=self.open_ratings_page)
+                resultButton = tk.Button(resultFrame, text="Download", command=lambda: self.open_ratings_page(result["ref"]))
                 resultLabel.pack(side="left")
                 resultButton.pack(side="right", expand=1)
                 resultFrame.pack(fill="x", padx=10, pady=5, expand=1)
