@@ -186,8 +186,12 @@ class NewUserLoginWindow:
         result = mongo.create(self.username_entry.get(), self.password_entry.get(), self.clicked_grade.get(), self.clicked_subject.get())
         if not result:
             print("Something went wrong with creating a new user!")
+            unsuccessful = tk.Label(root, text="Uh Oh! Something went wrong with creating a new user")
+            unsuccessful.pack()
         else:
             print("New user created successfully")
+            successful = tk.Label(root, text="New User Successfully Created.")
+            successful.pack()
 
     def __init__(self, root):
         self.root = root

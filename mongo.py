@@ -20,9 +20,12 @@ fs = gridfs.GridFS(db)
 def create(username, password, grade, subject): # add a username and associated password
     login = db["login"]
     user = login.find_one({"username": username})
-
+    
     if user is not None:
         print("A user with that username has already been found")
+        return False
+    elif username == "" or password == "":
+        print("Please enter a username and password")
         return False
     else:
         login.insert_one({"username": username, "password": password, "grade": grade, "subject": subject})
