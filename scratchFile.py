@@ -133,8 +133,8 @@ class databaseScreen:
         self.canvasFrame.update()
             
 
-    def __init__(self, root):
-
+    def __init__(self, root, user):
+        self.user = user # reference to the user thats logged in 
         self.root = root
         self.root.title("Document Database")
 
@@ -291,13 +291,13 @@ class NewUserLoginWindow:
 class ExistingUserLoginWindow:
     widgets = []
 
-    def user_pass_to_main(self):
+    def user_pass_to_main(self, user):
         self.root.title("Main Window")
 
         self.DestroyAllWidgets(self.widgets)
         root = tk.Tk()
         root.geometry("1000x500")
-        login_window = databaseScreen(root)
+        login_window = databaseScreen(root, user)
 
     def __init__(self, root):
         self.root = root
@@ -335,9 +335,10 @@ class ExistingUserLoginWindow:
         password = self.password_entry.get()
 
         # Check if the username and password are correct (you can replace this with your own logic) (it has been replaced)
-        if mongo.validate_user(username, password):
+        user = mongo.validate_user(username, password)
+        if user:
             print("Passed")
-            self.user_pass_to_main()
+            self.user_pass_to_main(user)
         else:
             messagebox.showerror("Login Failed", "Invalid username or password")
 

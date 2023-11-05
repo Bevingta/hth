@@ -68,7 +68,7 @@ def validate_user(username, password):
         return False
     else:
         print("User found")
-        return True
+        return user
 
 def search_for_pdf(subject, grade):
     pdfs = db["pdfs"]    
