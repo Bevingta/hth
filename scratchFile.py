@@ -128,24 +128,23 @@ class databaseScreen:
         # add in the loop to go through the list of lists here
         results = mongo.search_for_pdf(selected_subject, selected_grade)
         for result in results:
-            for i in range(100):
-                if (result["number_of_ratings"] != 0):
-                    rating = str(int(result["rating"] / result["number_of_ratings"]))
-                else:
-                    rating = "0"
-                title = "Title: " + result["title"]
-                insert_text = f"{title} (Rating: {rating}/5)"
-                print(insert_text)
+            if (result["number_of_ratings"] != 0):
+                rating = str(int(result["rating"] / result["number_of_ratings"]))
+            else:
+                rating = "0"
+            title = "Title: " + result["title"]
+            insert_text = f"{title} (Rating: {rating}/5)"
+            print(insert_text)
 
-                resultFrame = tk.Frame(self.canvasFrame)
-                resultLabel = tk.Label(resultFrame, text=insert_text)
-                resultButton = tk.Button(resultFrame, text="Rate", command=lambda: self.open_ratings_page(result["ref"]))
-                resultLabel.pack(side="left")
-                downloadButton = tk.Button(resultFrame, text="Download", command=lambda: self.download_document(result["title"], result["ref"]))
-                resultButton.pack(side="right", expand=1)
-                downloadButton.pack(side="right", expand=1)
-                resultFrame.pack(fill="x", padx=10, pady=5, expand=1)
-                self.search_frames.append(resultFrame)
+            resultFrame = tk.Frame(self.canvasFrame)
+            resultLabel = tk.Label(resultFrame, text=insert_text)
+            resultButton = tk.Button(resultFrame, text="Rate", command=lambda: self.open_ratings_page(result["ref"]))
+            resultLabel.pack(side="left")
+            downloadButton = tk.Button(resultFrame, text="Download", command=lambda: self.download_document(result["title"], result["ref"]))
+            resultButton.pack(side="right", expand=1)
+            downloadButton.pack(side="right", expand=1)
+            resultFrame.pack(fill="x", padx=10, pady=5, expand=1)
+            self.search_frames.append(resultFrame)
 
         self.canvasFrame.update()
             
@@ -182,7 +181,7 @@ class databaseScreen:
         self.filter_button.pack(side=tk.TOP)
 
         canvas = tk.Canvas(frame, height=500, width=750)
-        canvas.pack(side=tk.BOTTOM, expand=1)
+        canvas.pack(fill="both", side="bottom", expand=1)
 
         scrollbar = tk.Scrollbar(root, command=canvas.yview)
         scrollbar.pack(side=tk.RIGHT, fill="y")
