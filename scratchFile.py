@@ -12,24 +12,32 @@ class databaseScreen:
 
     def on_button_click(self, dropdown1, dropdown2):
         # This function will be called when the button is clicked
-        selected_option1 = dropdown1.get()
-        selected_option2 = dropdown2.get()
-        print(f"Grade: {selected_option2}, Subject: {selected_option1}")
+        selected_subject = dropdown1.get()
+        selected_grade = dropdown2.get()
+        print(f"selected_subject: {selected_subject}, selected_grade: {selected_grade}")
 
-        listbox.pack(fill=BOTH, expand=True)
-
-        listbox.delete(0, listbox.size())
-
+        
         # add in the loop to go through the list of lists here
-        results = mongo.search_for_pdf(selected_option1, selected_option2)
+        results = mongo.search_for_pdf(selected_subject, selected_grade)
         for result in results:
-            if (result["number_of_ratings"] != 0):
-                rating = str(result["rating"] / result["number_of_ratings"])
-            else:
-                rating = "0"
-            title = "Title: " + result["title"]
-            insert_text = f"{title} (Rating: {rating}/5)"
-            listbox.insert(END, insert_text, "")
+            for i in range(100):
+                if (result["number_of_ratings"] != 0):
+                    rating = str(result["rating"] / result["number_of_ratings"])
+                else:
+                    rating = "0"
+                title = "Title: " + result["title"]
+                insert_text = f"{title} (Rating: {rating}/5)"
+                print(insert_text)
+
+                resultFrame = tk.Frame(self.canvasFrame)
+                resultLabel = tk.Label(resultFrame, text=insert_text)
+                resultButton = tk.Button(resultFrame, text="Download")
+                resultLabel.pack(side="left")
+                resultButton.pack(side="right", expand=1)
+                resultFrame.pack(fill="x", padx=10, pady=5, expand=1)
+
+        self.canvasFrame.update()
+            
 
     def __init__(self, root):
 
@@ -38,7 +46,7 @@ class databaseScreen:
 
         # Create a frame to hold the widgets in a horizontal line
         frame = tk.Frame(root)
-        frame.pack()
+        frame.pack(side=tk.LEFT, expand=1)
 
         # Create the first dropdown
         dropdown1 = tk.StringVar(root)
@@ -53,9 +61,6 @@ class databaseScreen:
                     "Chemistry",
                     "Other"
                     ]
-        dropdown1.set(subject_filter[0])  # Set the default selection
-        dropdown_menu1 = tk.OptionMenu(frame, dropdown1, *subjects)
-        dropdown_menu1.pack(side="left")
 
         # Create the second dropdown
         dropdown2 = tk.StringVar(root)
@@ -78,14 +83,33 @@ class databaseScreen:
                 "Junior (College)",
                 "Senior(College"
                 ]
+
+        dropdown1.set(subject_filter[0])  # Set the default selection
+        dropdown_menu1 = tk.OptionMenu(frame, dropdown1, *subjects)
+        dropdown_menu1.pack(side=tk.TOP)
+
         dropdown2.set(grade_filter[0])  # Set the default selection
         dropdown_menu2 = tk.OptionMenu(frame, dropdown2, *grades)
-        dropdown_menu2.pack(side="left")
+        dropdown_menu2.pack(side=tk.TOP)
 
-        listbox = tk.Listbox(root)
 
-        self.filter_button = tk.Button(root, text="Filter", command=self.on_button_click(dropdown1, dropdown2))
-        self.filter_button.pack()
+        self.filter_button = tk.Button(frame, text="Filter", command=lambda: self.on_button_click(dropdown1, dropdown2))
+        self.filter_button.pack(side=tk.TOP)
+
+        canvas = tk.Canvas(frame, height=500)
+        canvas.pack(side=tk.BOTTOM, expand=1)
+
+        scrollbar = tk.Scrollbar(root, command=canvas.yview)
+        scrollbar.pack(side=tk.RIGHT, fill="y")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        # frame inside to hold doc items
+        self.canvasFrame = tk.Frame(frame)
+        canvas.create_window(0,300, window=self.canvasFrame, anchor=tk.NW)
+
+        def on_frame_configure(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+        self.canvasFrame.bind("<Configure>", on_frame_configure)
 
 
 class NewUserLoginWindow:
