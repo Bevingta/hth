@@ -2,6 +2,7 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter import messagebox
 from lists import grades, subjects
+from tkinter import Listbox
 
 
 import mongo # our file
@@ -9,31 +10,31 @@ import mongo # our file
 class databaseScreen:
     widgets = []
 
+    def on_button_click(self, dropdown1, dropdown2):
+        # This function will be called when the button is clicked
+        selected_option1 = dropdown1.get()
+        selected_option2 = dropdown2.get()
+        print(f"Grade: {selected_option2}, Subject: {selected_option1}")
+
+        listbox.pack(fill=BOTH, expand=True)
+
+        listbox.delete(0, listbox.size())
+
+        # add in the loop to go through the list of lists here
+        results = mongo.search_for_pdf(selected_option1, selected_option2)
+        for result in results:
+            if (result["number_of_ratings"] != 0):
+                rating = str(result["rating"] / result["number_of_ratings"])
+            else:
+                rating = "0"
+            title = "Title: " + result["title"]
+            insert_text = f"{title} (Rating: {rating}/5)"
+            listbox.insert(END, insert_text, "")
+
     def __init__(self, root):
 
         self.root = root
         self.root.title("Document Database")
-
-        def on_button_click(self):
-            # This function will be called when the button is clicked
-            selected_option1 = dropdown1.get()
-            selected_option2 = dropdown2.get()
-            print(f"Grade: {selected_option2}, Subject: {selected_option1}")
-
-            listbox.pack(fill=BOTH, expand=True)
-
-            listbox.delete(0,listbox.size())
-
-            # add in the loop to go through the list of lists here
-            results = mongo.search_for_pdf(selected_option1, selected_option2)
-            for result in results:
-                if (result["number_of_ratings"] != 0):
-                    rating = str(result["rating"] / result["number_of_ratings"])
-                else:
-                    rating = "0"
-                title = "Title: " + result["title"]
-                insert_text = f"{title} (Rating: {rating})"
-                listbox.insert(END, insert_text, "")
 
         # Create a frame to hold the widgets in a horizontal line
         frame = tk.Frame(root)
@@ -81,10 +82,10 @@ class databaseScreen:
         dropdown_menu2 = tk.OptionMenu(frame, dropdown2, *grades)
         dropdown_menu2.pack(side="left")
 
-        listbox = Listbox(root)
+        listbox = tk.Listbox(root)
 
-        self.create_button = tk.Button(root, text="Filter", command=self.user_pass_to_main)
-        self.create_button.pack()
+        self.filter_button = tk.Button(root, text="Filter", command=self.on_button_click(dropdown1, dropdown2))
+        self.filter_button.pack()
 
 
 class NewUserLoginWindow:
