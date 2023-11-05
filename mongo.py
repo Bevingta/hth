@@ -71,3 +71,18 @@ def search_for_pdf(subject, grade):
     pdfs = db["pdfs"]    
     results = pdfs.find({"subject": subject, "grade": grade})
     return results
+
+def add_rating(ref, rating):
+    pdfs = db["pdfs"]
+    result = pdfs.find_one({"ref": ref})
+    if result is None:
+        print("Error leaving rating")
+        return False
+    else:
+        pdfs.update_one({"ref": ref}, {"$set": {
+                "rating": result["rating"] + rating,
+                "number_of_ratings": result["number_of_ratings"] + 1
+            } 
+        })
+        print("Updating ratings successfully")
+        return True
