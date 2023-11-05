@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+import customtkinter
 
 class NewDocument:
 
@@ -34,7 +35,7 @@ class NewDocument:
             "Other"
         ]
         dropdown1.set(subject_filter[0])  # Set the default selection
-        dropdown_menu1 = tk.OptionMenu(frame, dropdown1, *subject_filter)
+        dropdown_menu1 = customtkinter.CTkOptionMenu(frame, dropdown1, *subject_filter)
         dropdown_menu1.pack(side="left")
 
         # Create the second dropdown
@@ -69,6 +70,7 @@ class NewDocument:
 class RatingApp:
     def __init__(self, root):
         self.root = root
+        root = customtkinter.CTk()
         self.root.title("Rating App")
 
         self.rating = 0  # Initialize the rating to 0
@@ -82,11 +84,11 @@ class RatingApp:
         for i in range(1, 6):
             button = tk.Button(root, text=str(i), command=lambda i=i: self.set_rating(i))
             button.config(width=2, height=1)
-            button.pack(side=tk.LEFT, padx=10)
+            button.pack(side=CTk.LEFT, padx=10)
             self.rating_buttons.append(button)
 
         # Create a submit button
-        self.submit_button = tk.Button(root, text="Submit Rating", command=self.submit_rating)
+        self.submit_button = customtkinter.CTkButton(master=root, text="Submit Rating", command=self.submit_rating)
         self.submit_button.pack()
 
     def set_rating(self, rating):
@@ -114,11 +116,11 @@ class MainApplication:
         self.root.geometry("1000x500")
 
         # Create a button to open the login page
-        self.rating_button = tk.Button(root, text="Rate", command=self.open_ratings_page)
+        self.rating_button = customtkinter.CTkButton(master=root, text="Rate", command=self.open_ratings_page)
         self.rating_button.pack()
         self.widgets.append(self.rating_button)
 
-        self.login_new_button = tk.Button(root, text="New User", command=self.open_new_user_login_page)
+        self.login_new_button = customtkinter.CTkButton(master=root, text="New User", command=self.open_new_user_login_page)
         self.login_new_button.pack()
         self.widgets.append(self.login_new_button)
 
@@ -133,7 +135,7 @@ class MainApplication:
 
         login_window = ExistingUserLoginWindow(self.root)
 
-    def open_new_user_login_page(self):
+    def open_new_document_page(self):
         self.root.title("New Document")
 
         self.DestroyAllWidgets(self.widgets)

@@ -7,6 +7,43 @@ from tkinter import Listbox
 
 import mongo # our file
 
+class NewDocument:
+
+    def submitted_doc(self, dropdown1, dropdown2, doc_file_entry):
+        # This function will be called when the button is clicked
+        selected_option1 = dropdown1.get()
+        selected_option2 = dropdown2.get()
+        print(f"Grade: {selected_option2}, Subject: {selected_option1}")
+        print(f"Filepath: {doc_file_entry.get()}")
+
+    def __init__(self):
+        # Create a frame to hold the widgets in a horizontal line
+        frame = tk.Frame(root)
+        frame.pack()
+
+        self.doc_file_label = tk.Label(frame, text="Document Filepath")
+        self.doc_file_label.pack(side="left")
+        self.doc_file_entry = tk.Entry(frame)
+        self.doc_file_entry.pack(side="left")
+
+        # Create the first dropdown
+        dropdown1 = tk.StringVar(root)
+        # Dropdown menu options
+        dropdown1.set(subject_filter[0])  # Set the default selection
+        dropdown_menu1 = customtkinter.CTkOptionMenu(frame, dropdown1, *subjects)
+        dropdown_menu1.pack(side="left")
+
+        # Create the second dropdown
+        dropdown2 = tk.StringVar(root)
+
+        dropdown2.set(grade_filter[0])  # Set the default selection
+        dropdown_menu2 = tk.OptionMenu(frame, dropdown2, *grades)
+        dropdown_menu2.pack(side="left")
+
+        # Create a button
+        button = tk.Button(frame, text="Submit Document", command=self.submitted_doc(dropdown1, dropdown2, self.doc_file_entry))
+        button.pack(side="right")
+
 class RatingApp:
     def __init__(self, root, ref):
         self.root = root
@@ -49,6 +86,13 @@ class RatingApp:
 class databaseScreen:
     widgets = []
     search_frames = []
+
+    def open_new_document_page(self):
+        self.root.title("New Document")
+
+        self.DestroyAllWidgets(self.widgets)
+
+        login_window = NewDocument()
 
     def open_ratings_page(self, ref):
         popup = tk.Toplevel(self.root)
@@ -98,41 +142,14 @@ class databaseScreen:
         frame = tk.Frame(root)
         frame.pack(side=tk.LEFT, expand=1)
 
+        new_doc = tk.Button(root, text="New Document", command=self.open_new_document_page)
+
         # Create the first dropdown
         dropdown1 = tk.StringVar(root)
-        # Dropdown menu options
-        subject_filter = [
-                    "Math",
-                    "English",
-                    "Science",
-                    "History",
-                    "PE",
-                    "Art",
-                    "Chemistry",
-                    "Other"
-                    ]
+
 
         # Create the second dropdown
         dropdown2 = tk.StringVar(root)
-        # Dropdown menu options
-        grade_filter = [
-                "1st",
-                "2nd",
-                "3rd",
-                "4th",
-                "5th",
-                "6th",
-                "7th",
-                "8th",
-                "Freshmen (High School)",
-                "Sophomore (High School)",
-                "Junior (High School)",
-                "Senior (High School)",
-                "Freshmen (College)",
-                "Sophomore (College)",
-                "Junior (College)",
-                "Senior(College"
-                ]
 
         dropdown1.set(subject_filter[0])  # Set the default selection
         dropdown_menu1 = tk.OptionMenu(frame, dropdown1, *subjects)
