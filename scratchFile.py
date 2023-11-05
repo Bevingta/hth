@@ -8,10 +8,10 @@ from tkinter import Listbox
 import mongo # our file
 
 class RatingApp:
-    def __init__(self, root):
+    def __init__(self, root, ref):
         self.root = root
         self.root.title("Rating App")
-
+        self.ref = ref
         self.rating = 0  # Initialize the rating to 0
 
         # Create and configure labels
@@ -43,16 +43,23 @@ class RatingApp:
         else:
             messagebox.showinfo("Success", f"You have rated this product {self.rating} stars.")
             print(self.rating)
+            mongo.add_rating(self.ref, self.rating)
             self.root.destroy()
 
 class databaseScreen:
     widgets = []
+    search_frames = []
 
     def open_ratings_page(self, ref):
         popup = tk.Toplevel(self.root)
-        self.rating_popup = RatingApp(popup)
+        self.rating_popup = RatingApp(popup, ref)
 
     def on_button_click(self, dropdown1, dropdown2):
+        # first, destroy all search_frames
+        for f in self.search_frames:
+            f.destroy()
+        self.search_frames = []
+
         # This function will be called when the button is clicked
         selected_subject = dropdown1.get()
         selected_grade = dropdown2.get()
@@ -77,6 +84,7 @@ class databaseScreen:
                 resultLabel.pack(side="left")
                 resultButton.pack(side="right", expand=1)
                 resultFrame.pack(fill="x", padx=10, pady=5, expand=1)
+                self.search_frames.append(resultFrame)
 
         self.canvasFrame.update()
             
