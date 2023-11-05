@@ -157,7 +157,7 @@ class databaseScreen:
 
         # Create a frame to hold the widgets in a horizontal line
         frame = tk.Frame(root)
-        frame.pack(expand=1)
+        frame.pack()
 
         new_doc = tk.Button(frame, text="New Document", command=self.open_new_document_page)
         new_doc.pack(side=tk.TOP)
@@ -181,7 +181,7 @@ class databaseScreen:
         self.filter_button = tk.Button(frame, text="Filter", command=lambda: self.on_button_click(dropdown1, dropdown2))
         self.filter_button.pack(side=tk.TOP)
 
-        canvas = tk.Canvas(frame, height=500)
+        canvas = tk.Canvas(frame, height=500, width=750)
         canvas.pack(side=tk.BOTTOM, expand=1)
 
         scrollbar = tk.Scrollbar(root, command=canvas.yview)
