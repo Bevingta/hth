@@ -190,8 +190,12 @@ class NewUserLoginWindow:
         result = mongo.create(self.username_entry.get(), self.password_entry.get(), self.clicked_grade.get(), self.clicked_subject.get())
         if not result:
             print("Something went wrong with creating a new user!")
+            unsuccessful = tk.Label(root, text="Uh Oh! Something went wrong with creating a new user")
+            unsuccessful.pack()
         else:
             print("New user created successfully")
+            successful = tk.Label(root, text="New User Successfully Created.")
+            successful.pack()
 
     def __init__(self, root):
         self.root = root
@@ -265,11 +269,27 @@ class NewUserLoginWindow:
         self.create_button = tk.Button(root, text="Create User", command=self.user_pass_to_main)
         self.create_button.pack()
 
+        returnButton = tk.Button(root, text="Return to Login Screen", command=self.return_to_login)
+        returnButton.pack(side=tk.BOTTOM)
+        
+        self.widgets.append(returnButton)
         self.widgets.append(self.username_label)
         self.widgets.append(self.username_entry)
         self.widgets.append(self.password_label)
         self.widgets.append(self.password_entry)
         self.widgets.append(drop)
+
+    def return_to_login(self):
+        for widget in self.widgets:
+            try:
+                widget.destroy()
+            except:
+                print("failed to destroy a widget")
+        self.widget = []
+        self.root.destroy()
+        root = tk.Tk()
+        root.geometry("1000x500")
+        MainApplication(root)
 
 
 class ExistingUserLoginWindow:
@@ -279,8 +299,9 @@ class ExistingUserLoginWindow:
         self.root.title("Main Window")
 
         self.DestroyAllWidgets(self.widgets)
-
-        login_window = databaseScreen(self.root)
+        root = tk.Tk()
+        root.geometry("1000x500")
+        login_window = databaseScreen(root)
 
     def __init__(self, root):
         self.root = root
@@ -310,7 +331,7 @@ class ExistingUserLoginWindow:
     def DestroyAllWidgets(self, _widgets):
         for widget in _widgets:
             widget.destroy()
-        widgets = []
+        self.widgets = []
 
     def login(self):
         # Get the entered username and password
@@ -345,21 +366,22 @@ class MainApplication:
     def open_existing_user_login_page(self):
         self.root.title("Existing User Login")
 
-        self.DestroyAllWidgets(self.widgets)
-
+        self.DestroyAllWidgets()
         login_window = ExistingUserLoginWindow(self.root)
 
     def open_new_user_login_page(self):
         self.root.title("New User")
 
-        self.DestroyAllWidgets(self.widgets)
-
+        self.DestroyAllWidgets()
         login_window = NewUserLoginWindow(self.root)
 
-    def DestroyAllWidgets(self, _widgets):
-        for widget in _widgets:
-            widget.destroy()
-        widgets = []
+    def DestroyAllWidgets(self):
+        for widget in self.widgets:
+            try:
+                widget.destroy()
+            except:
+                print("failed to destroy a widget")
+        self.widgets = [] # clear widgets
 
 if __name__ == "__main__":
     root = tk.Tk()
