@@ -96,16 +96,8 @@ class databaseScreen:
     widgets = []
     search_frames = []
 
-    def download_document(self, title):
-        document = self.collection.find_one({"name": title})
-        if document:
-            filename = f"{selected_document_name}.pdf"
-
-            with open(filename, 'wb') as file:
-                file.write(document['data'])
-            print(f"Document '{selected_document_name}' downloaded as {filename}")
-        else:
-            print(f"Document '{selected_document_name}' not found in the database.")
+    def download_document(self, title, ref):
+        mongo.read_and_save_pdf(title + '.pdf', ref)
 
     def DestroyAllWidgets(self, _widgets):
         for widget in _widgets:
@@ -149,7 +141,7 @@ class databaseScreen:
                 resultLabel = tk.Label(resultFrame, text=insert_text)
                 resultButton = tk.Button(resultFrame, text="Rate", command=lambda: self.open_ratings_page(result["ref"]))
                 resultLabel.pack(side="left")
-                downloadButton = tk.Button(resultFrame, text="Rate", command=lambda: self.download_document)
+                downloadButton = tk.Button(resultFrame, text="Download", command=lambda: self.download_document(result["title"], result["ref"]))
                 resultButton.pack(side="right", expand=1)
                 downloadButton.pack(side="right", expand=1)
                 resultFrame.pack(fill="x", padx=10, pady=5, expand=1)
