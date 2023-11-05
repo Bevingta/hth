@@ -157,7 +157,7 @@ class databaseScreen:
 
         # Create a frame to hold the widgets in a horizontal line
         frame = tk.Frame(root)
-        frame.pack(side=tk.LEFT, expand=1)
+        frame.pack(expand=1)
 
         new_doc = tk.Button(frame, text="New Document", command=self.open_new_document_page)
         new_doc.pack(side=tk.TOP)
