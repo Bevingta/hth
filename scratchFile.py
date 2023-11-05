@@ -16,15 +16,22 @@ class NewDocument:
         print(f"Grade: {selected_option2}, Subject: {selected_option1}")
         print(f"Filepath: {doc_file_entry.get()}")
 
+
     def __init__(self, root):
         # Create a frame to hold the widgets in a horizontal line
         frame = tk.Frame(root)
         frame.pack()
 
+        self.doc_name = tk.Label(frame, text="File Name")
+        self.doc_name.pack(side="left")
+        self.doc_name_entry = tk.Entry(frame)
+        self.doc_name_entry.pack(side="left")
+
         self.doc_file_label = tk.Label(frame, text="Document Filepath")
         self.doc_file_label.pack(side="left")
         self.doc_file_entry = tk.Entry(frame)
         self.doc_file_entry.pack(side="left")
+
 
         # Create the first dropdown
         dropdown1 = tk.StringVar(root)
