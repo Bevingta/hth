@@ -29,14 +29,14 @@ class NewDocument:
         # Create the first dropdown
         dropdown1 = tk.StringVar(root)
         # Dropdown menu options
-        dropdown1.set(subject_filter[0])  # Set the default selection
+        dropdown1.set(subjects[0])  # Set the default selection
         dropdown_menu1 = customtkinter.CTkOptionMenu(frame, dropdown1, *subjects)
         dropdown_menu1.pack(side="left")
 
         # Create the second dropdown
         dropdown2 = tk.StringVar(root)
 
-        dropdown2.set(grade_filter[0])  # Set the default selection
+        dropdown2.set(grades[0])  # Set the default selection
         dropdown_menu2 = tk.OptionMenu(frame, dropdown2, *grades)
         dropdown_menu2.pack(side="left")
 
