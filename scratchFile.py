@@ -15,9 +15,11 @@ class NewDocument:
         selected_option2 = dropdown2.get()
         print(f"Grade: {selected_option2}, Subject: {selected_option1}")
         print(f"Filepath: {doc_file_entry.get()}")
+        result = mongo.insert_pdf(self.doc_name_entry.get(), doc_file_entry.get(), selected_option2, self.doc_name_entry.get(), selected_option1)
+        
 
 
-    def __init__(self, root):
+    def __init__(self, root, user):
         # Create a frame to hold the widgets in a horizontal line
         frame = tk.Frame(root)
         frame.pack()
@@ -112,7 +114,7 @@ class databaseScreen:
 
     def open_new_document_page(self):
         popup_doc = tk.Toplevel(self.root)
-        self.document_popup = NewDocument(popup_doc)
+        self.document_popup = NewDocument(popup_doc, self.user)
 
 
     def open_ratings_page(self, ref):
@@ -156,8 +158,8 @@ class databaseScreen:
         self.canvasFrame.update()
             
 
-    def __init__(self, root):
-
+    def __init__(self, root, user):
+        self.user = user # reference to the user thats logged in 
         self.root = root
         self.root.title("Document Database")
 
@@ -315,13 +317,13 @@ class NewUserLoginWindow:
 class ExistingUserLoginWindow:
     widgets = []
 
-    def user_pass_to_main(self):
+    def user_pass_to_main(self, user):
         self.root.title("Main Window")
 
         self.DestroyAllWidgets(self.widgets)
         root = tk.Tk()
         root.geometry("1000x500")
-        login_window = databaseScreen(root)
+        login_window = databaseScreen(root, user)
 
     def __init__(self, root):
         self.root = root
@@ -359,9 +361,10 @@ class ExistingUserLoginWindow:
         password = self.password_entry.get()
 
         # Check if the username and password are correct (you can replace this with your own logic) (it has been replaced)
-        if mongo.validate_user(username, password):
+        user = mongo.validate_user(username, password)
+        if user:
             print("Passed")
-            self.user_pass_to_main()
+            self.user_pass_to_main(user)
         else:
             messagebox.showerror("Login Failed", "Invalid username or password")
 
