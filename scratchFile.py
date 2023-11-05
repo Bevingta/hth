@@ -71,7 +71,7 @@ class databaseScreen:
         for result in results:
             for i in range(100):
                 if (result["number_of_ratings"] != 0):
-                    rating = str(result["rating"] / result["number_of_ratings"])
+                    rating = str(int(result["rating"] / result["number_of_ratings"]))
                 else:
                     rating = "0"
                 title = "Title: " + result["title"]
