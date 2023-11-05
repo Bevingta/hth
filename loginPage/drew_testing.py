@@ -1,52 +1,151 @@
 import tkinter as tk
+from tkinter import messagebox
 
-def download_document(document_name):
-    # Replace this function with your own download logic
-    # In this example, we simply print the document name
-    print(f"Downloading document: {document_name}")
+class NewDocument:
 
-root = tk.Tk()
-root.title("Document List")
+    def submitted_doc(self, dropdown1, dropdown2, doc_file_entry):
+        # This function will be called when the button is clicked
+        selected_option1 = dropdown1.get()
+        selected_option2 = dropdown2.get()
+        print(f"Grade: {selected_option2}, Subject: {selected_option1}")
+        print(f"Filepath: {doc_file_entry.get()}")
 
-# Create a canvas with a vertical scrollbar
-canvas = tk.Canvas(root)
-canvas.pack(side="left", fill="both", expand=True)
+    def __init__(self):
+        # Create a frame to hold the widgets in a horizontal line
+        frame = tk.Frame(root)
+        frame.pack()
 
-scrollbar = tk.Scrollbar(root, command=canvas.yview)
-scrollbar.pack(side="left", fill="y")
-canvas.configure(yscrollcommand=scrollbar.set)
+        self.doc_file_label = tk.Label(frame, text="Document Filepath")
+        self.doc_file_label.pack(side="left")
+        self.doc_file_entry = tk.Entry(frame)
+        self.doc_file_entry.pack(side="left")
 
-# Create a frame inside the canvas to hold the document items
-frame = tk.Frame(canvas)
-canvas.create_window((0, 0), window=frame, anchor="nw")
+        # Create the first dropdown
+        dropdown1 = tk.StringVar(root)
+        # Dropdown menu options
+        subject_filter = [
+            "Math",
+            "English",
+            "Science",
+            "History",
+            "PE",
+            "Art",
+            "Chemistry",
+            "Other"
+        ]
+        dropdown1.set(subject_filter[0])  # Set the default selection
+        dropdown_menu1 = tk.OptionMenu(frame, dropdown1, *subject_filter)
+        dropdown_menu1.pack(side="left")
 
-# Create a list of documents (replace this with your actual document data)
-documents = [
-    "Document 1",
-    "Document 2",
-    "Document 3",
-    "Document 4",
-    "Document 5",
-]
+        # Create the second dropdown
+        dropdown2 = tk.StringVar(root)
+        # Dropdown menu options
+        grade_filter = [
+            "1st",
+            "2nd",
+            "3rd",
+            "4th",
+            "5th",
+            "6th",
+            "7th",
+            "8th",
+            "Freshmen (High School)",
+            "Sophomore (High School)",
+            "Junior (High School)",
+            "Senior (High School)",
+            "Freshmen (College)",
+            "Sophomore (College)",
+            "Junior (College)",
+            "Senior(College"
+        ]
+        dropdown2.set(grade_filter[0])  # Set the default selection
+        dropdown_menu2 = tk.OptionMenu(frame, dropdown2, *grade_filter)
+        dropdown_menu2.pack(side="left")
 
-# Function to add document items with download buttons
-def add_document_items():
-    for document_name in documents:
-        document_frame = tk.Frame(frame)
-        document_frame.pack(fill="x", padx=10, pady=5)
+        # Create a button
+        button = tk.Button(frame, text="Submit Document", command=self.submitted_doc(dropdown1, dropdown2, self.doc_file_entry))
+        button.pack(side="right")
 
-        document_label = tk.Label(document_frame, text=document_name)
-        document_label.pack(side="left")
+class RatingApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Rating App")
 
-        download_button = tk.Button(document_frame, text="Download", command=lambda name=document_name: download_document(name))
-        download_button.pack(side="right")
+        self.rating = 0  # Initialize the rating to 0
 
-add_document_items()
+        # Create and configure labels
+        self.label = tk.Label(root, text="Rate this product:")
+        self.label.pack()
 
-# Update the canvas when the frame size changes
-def on_frame_configure(event):
-    canvas.configure(scrollregion=canvas.bbox("all"))
+        # Create and configure rating buttons
+        self.rating_buttons = []
+        for i in range(1, 6):
+            button = tk.Button(root, text=str(i), command=lambda i=i: self.set_rating(i))
+            button.config(width=2, height=1)
+            button.pack(side=tk.LEFT, padx=10)
+            self.rating_buttons.append(button)
 
-frame.bind("<Configure>", on_frame_configure)
+        # Create a submit button
+        self.submit_button = tk.Button(root, text="Submit Rating", command=self.submit_rating)
+        self.submit_button.pack()
 
-root.mainloop()
+    def set_rating(self, rating):
+        self.rating = rating
+        for button in self.rating_buttons:
+            button.config(state=tk.NORMAL)
+        for button in self.rating_buttons[:rating]:
+            button.config(state=tk.DISABLED)
+
+    def submit_rating(self):
+        if self.rating == 0:
+            messagebox.showerror("Error", "Please select a rating.")
+        else:
+            messagebox.showinfo("Success", f"You have rated this product {self.rating} stars.")
+            print(self.rating)
+            self.root.destroy()
+
+class MainApplication:
+    widgets = []
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Main Window")
+
+        # Set the initial window size
+        self.root.geometry("1000x500")
+
+        # Create a button to open the login page
+        self.rating_button = tk.Button(root, text="Rate", command=self.open_ratings_page)
+        self.rating_button.pack()
+        self.widgets.append(self.rating_button)
+
+        self.login_new_button = tk.Button(root, text="New User", command=self.open_new_user_login_page)
+        self.login_new_button.pack()
+        self.widgets.append(self.login_new_button)
+
+    def open_ratings_page(self):
+        popup = tk.Toplevel(self.root)
+        self.rating_popup = RatingApp(popup)
+
+    def open_existing_user_login_page(self):
+        self.root.title("Existing User Login")
+
+        self.DestroyAllWidgets(self.widgets)
+
+        login_window = ExistingUserLoginWindow(self.root)
+
+    def open_new_user_login_page(self):
+        self.root.title("New Document")
+
+        self.DestroyAllWidgets(self.widgets)
+
+        login_window = NewDocument()
+
+    def DestroyAllWidgets(self, _widgets):
+        for widget in _widgets:
+            widget.destroy()
+        widgets = []
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = MainApplication(root)
+    root.mainloop()
