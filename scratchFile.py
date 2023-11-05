@@ -145,9 +145,11 @@ class databaseScreen:
 
                 resultFrame = tk.Frame(self.canvasFrame)
                 resultLabel = tk.Label(resultFrame, text=insert_text)
-                resultButton = tk.Button(resultFrame, text="Download", command=lambda: self.open_ratings_page(result["ref"]))
+                resultButton = tk.Button(resultFrame, text="Rate", command=lambda: self.open_ratings_page(result["ref"]))
                 resultLabel.pack(side="left")
+                downloadButton = tk.Button(resultFrame, text="Rate", command=lambda: self.download_document)
                 resultButton.pack(side="right", expand=1)
+                downloadButton.pack(side="right", expand=1)
                 resultFrame.pack(fill="x", padx=10, pady=5, expand=1)
                 self.search_frames.append(resultFrame)
 
