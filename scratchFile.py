@@ -7,8 +7,50 @@ from tkinter import Listbox
 
 import mongo # our file
 
+class RatingApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Rating App")
+
+        self.rating = 0  # Initialize the rating to 0
+
+        # Create and configure labels
+        self.label = tk.Label(root, text="Rate this product:")
+        self.label.pack()
+
+        # Create and configure rating buttons
+        self.rating_buttons = []
+        for i in range(1, 6):
+            button = tk.Button(root, text=str(i), command=lambda i=i: self.set_rating(i))
+            button.config(width=2, height=1)
+            button.pack(side=tk.LEFT, padx=10)
+            self.rating_buttons.append(button)
+
+        # Create a submit button
+        self.submit_button = tk.Button(root, text="Submit Rating", command=self.submit_rating)
+        self.submit_button.pack()
+
+    def set_rating(self, rating):
+        self.rating = rating
+        for button in self.rating_buttons:
+            button.config(state=tk.NORMAL)
+        for button in self.rating_buttons[:rating]:
+            button.config(state=tk.DISABLED)
+
+    def submit_rating(self):
+        if self.rating == 0:
+            messagebox.showerror("Error", "Please select a rating.")
+        else:
+            messagebox.showinfo("Success", f"You have rated this product {self.rating} stars.")
+            print(self.rating)
+            self.root.destroy()
+
 class databaseScreen:
     widgets = []
+
+    def open_ratings_page(self):
+        popup = tk.Toplevel(self.root)
+        self.rating_popup = RatingApp(popup)
 
     def on_button_click(self, dropdown1, dropdown2):
         # This function will be called when the button is clicked
@@ -31,7 +73,7 @@ class databaseScreen:
 
                 resultFrame = tk.Frame(self.canvasFrame)
                 resultLabel = tk.Label(resultFrame, text=insert_text)
-                resultButton = tk.Button(resultFrame, text="Download")
+                resultButton = tk.Button(resultFrame, text="Download", command=self.open_ratings_page)
                 resultLabel.pack(side="left")
                 resultButton.pack(side="right", expand=1)
                 resultFrame.pack(fill="x", padx=10, pady=5, expand=1)
