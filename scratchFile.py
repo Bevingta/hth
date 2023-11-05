@@ -15,6 +15,8 @@ class NewDocument:
         selected_option2 = dropdown2.get()
         print(f"Grade: {selected_option2}, Subject: {selected_option1}")
         print(f"Filepath: {doc_file_entry.get()}")
+        result = mongo.insert_pdf(self.doc_name_entry.get(), doc_file_entry.get(), selected_option2, self.doc_name_entry.get(), selected_option1)
+        
 
 
     def __init__(self, root, user):
