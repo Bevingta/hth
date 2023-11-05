@@ -16,21 +16,28 @@ class NewDocument:
         print(f"Grade: {selected_option2}, Subject: {selected_option1}")
         print(f"Filepath: {doc_file_entry.get()}")
 
-    def __init__(self):
+
+    def __init__(self, root):
         # Create a frame to hold the widgets in a horizontal line
         frame = tk.Frame(root)
         frame.pack()
+
+        self.doc_name = tk.Label(frame, text="File Name")
+        self.doc_name.pack(side="left")
+        self.doc_name_entry = tk.Entry(frame)
+        self.doc_name_entry.pack(side="left")
 
         self.doc_file_label = tk.Label(frame, text="Document Filepath")
         self.doc_file_label.pack(side="left")
         self.doc_file_entry = tk.Entry(frame)
         self.doc_file_entry.pack(side="left")
 
+
         # Create the first dropdown
         dropdown1 = tk.StringVar(root)
         # Dropdown menu options
         dropdown1.set(subjects[0])  # Set the default selection
-        dropdown_menu1 = customtkinter.CTkOptionMenu(frame, dropdown1, *subjects)
+        dropdown_menu1 = tk.OptionMenu(frame, dropdown1, *subjects)
         dropdown_menu1.pack(side="left")
 
         # Create the second dropdown
@@ -41,7 +48,7 @@ class NewDocument:
         dropdown_menu2.pack(side="left")
 
         # Create a button
-        button = tk.Button(frame, text="Submit Document", command=self.submitted_doc(dropdown1, dropdown2, self.doc_file_entry))
+        button = tk.Button(frame, text="Submit Document", command=lambda: self.submitted_doc(dropdown1, dropdown2, self.doc_file_entry))
         button.pack(side="right")
 
 class RatingApp:
@@ -87,12 +94,15 @@ class databaseScreen:
     widgets = []
     search_frames = []
 
+    def DestroyAllWidgets(self, _widgets):
+        for widget in _widgets:
+            widget.destroy()
+        widgets = []
+
     def open_new_document_page(self):
-        self.root.title("New Document")
+        popup_doc = tk.Toplevel(self.root)
+        self.document_popup = NewDocument(popup_doc)
 
-        self.DestroyAllWidgets(self.widgets)
-
-        login_window = NewDocument()
 
     def open_ratings_page(self, ref):
         popup = tk.Toplevel(self.root)
@@ -142,7 +152,8 @@ class databaseScreen:
         frame = tk.Frame(root)
         frame.pack(side=tk.LEFT, expand=1)
 
-        new_doc = tk.Button(root, text="New Document", command=self.open_new_document_page)
+        new_doc = tk.Button(frame, text="New Document", command=self.open_new_document_page)
+        new_doc.pack(side=tk.TOP)
 
         # Create the first dropdown
         dropdown1 = tk.StringVar(root)
@@ -151,11 +162,11 @@ class databaseScreen:
         # Create the second dropdown
         dropdown2 = tk.StringVar(root)
 
-        dropdown1.set(subject_filter[0])  # Set the default selection
+        dropdown1.set(subjects[0])  # Set the default selection
         dropdown_menu1 = tk.OptionMenu(frame, dropdown1, *subjects)
         dropdown_menu1.pack(side=tk.TOP)
 
-        dropdown2.set(grade_filter[0])  # Set the default selection
+        dropdown2.set(grades[0])  # Set the default selection
         dropdown_menu2 = tk.OptionMenu(frame, dropdown2, *grades)
         dropdown_menu2.pack(side=tk.TOP)
 
