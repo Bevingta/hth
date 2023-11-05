@@ -33,7 +33,7 @@ def on_button_click():
         else:
             rating = "0"
         title = "Title: " + result["title"]
-        insert_text = f"{title} (Rating: {rating})"
+        insert_text = f"{title} (Rating: {rating}/5)"
         listbox.insert(END, insert_text, "")
 
 # Create the main application window
@@ -48,9 +48,7 @@ frame.pack()
 
 #not sure what you want here
 def create_new_doc():
-    window = Window
-    window.grab_set()
-
+    pass
 
 new_doc_button = tk.Button(frame, text="Upload Document", command=create_new_doc)
 new_doc_button.pack(side="left")
